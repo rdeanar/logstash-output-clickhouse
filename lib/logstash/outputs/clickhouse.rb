@@ -191,7 +191,10 @@ class LogStash::Outputs::ClickHouse < LogStash::Outputs::Base
               :response_code => response.code,
               :url => url,
               :size => documents.length,
-              :uuid => uuid)
+              :uuid => uuid,
+              :message => response.message,
+              :response => response.body
+              )
           if @save_on_failure
             save_to_disk(documents)
           end
