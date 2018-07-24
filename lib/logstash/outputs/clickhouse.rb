@@ -109,11 +109,20 @@ class LogStash::Outputs::ClickHouse < LogStash::Outputs::Base
 
   public
   def flush(events, close=false)
-    documents = ""  #this is the string of hashes that we push to Fusion as documents
+#     documents = ""  #this is the string of hashes that we push to Fusion as documents
+#
+#     events.each do |event|
+#         documents << LogStash::Json.dump( mutate( event.to_hash() ) ) << "\n"
+#     end
 
+    lines = []
     events.each do |event|
-        documents << LogStash::Json.dump( mutate( event.to_hash() ) ) << "\n"
+        line = LogStash::Json.dump( mutate( event.to_hash) )
+        lines.push(line)
     end
+    documents = lines.join("\n")
+    @logger.debug("clickhouse_receive", :documents => documents)
+    @logger.info("clickhouse flush", :count => lines.length)
 
     hosts = []
     http_hosts.each{|host| hosts << host.dup}
