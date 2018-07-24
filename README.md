@@ -1,5 +1,15 @@
 # Logstash Plugin
 
+## Docker installation
+
+```
+FROM docker.elastic.co/logstash/logstash-oss:latest
+
+COPY --from=deanar/logstash-output-clickhouse:0.1.1 /logstash-output-clickhouse-0.1.1.gem /tmp/logstash-output-clickhouse.gem
+
+RUN logstash-plugin install /tmp/logstash-output-clickhouse.gem
+```
+
 This plugin is a modified version of the Lucidworks logstash json_batch. That plugin is available [here](https://github.com/lucidworks/logstash-output-json_batch). 
 
 It has been modified to support ClickHouse JSON Format, but also supports fault tolerance.
