@@ -122,7 +122,7 @@ class LogStash::Outputs::ClickHouse < LogStash::Outputs::Base
     end
     documents = lines.join("\n")
     @logger.debug("clickhouse_receive", :documents => documents)
-    @logger.info("clickhouse flush", :count => lines.length)
+    @logger.info("clickhouse flush", :count => lines.length, :table => @table)
 
     hosts = []
     http_hosts.each{|host| hosts << host.dup}
